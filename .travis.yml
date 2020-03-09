@@ -41,4 +41,7 @@ jobs:
         # Expose app
         - kubectl apply -f hello.svc.yml
         - kubectl get service hello-svc
-        - kubectl get svc hello-svc -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'
+        - kubectl get service hello-svc -o json
+        # - kubectl get service hello-svc -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'
+        # TODO: curl from app
+        # TODO: verify app output
