@@ -8,6 +8,7 @@ env:
 jobs:
   include:
     - stage: Integration Tests
+
       before_script:
         # Download and install kubectl
         - curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_RELEASE}/bin/linux/amd64/kubectl
@@ -24,5 +25,10 @@ jobs:
 
         # Set KUBECONFIG environment variable
         - export KUBECONFIG="$(kind get kubeconfig-path)"
+
       script:
+        # Wait for control plane rollout
+        - kubectl wait node/kind-control-plane --for=condition=Ready
+
+        # List running nodes
         - kubectl get nodes
