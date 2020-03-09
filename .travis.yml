@@ -7,6 +7,7 @@ env:
     - KIND_RELEASE=v0.7.0
 jobs:
   include:
+    # TODO: build docker image
     - stage: Integration Tests
 
       before_script:
@@ -58,4 +59,4 @@ jobs:
         - curl -i ${HELLO_URL} > hello.txt
         - cat hello.txt
         # Verify app output
-        - cat hello.txt | grep "Check out my ____K8s Deep Dive course!"
+        - cat hello.txt | grep "Check out my K8s Deep Dive course!"
