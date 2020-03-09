@@ -1,18 +1,20 @@
 services:
   - docker
 
+env:
+  global:
+    - KUBECTL_RELEASE=v1.17.3
+    - KIND_RELEASE=0.7.0
 jobs:
   include:
     - stage: Integration Tests
       before_script:
         # Download and install kubectl
-        - KUBECTL_RELEASE=$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)
-        - curl -Lo https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_RELEASE}/bin/linux/amd64/kubectl
+        - curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_RELEASE}/bin/linux/amd64/kubectl
         - chmod +x kubectl
         - sudo mv kubectl /usr/local/bin/
 
         # Download and install KinD
-        - KIND_RELEASE=0.7.0
         - curl -Lo kind https://github.com/kubernetes-sigs/kind/releases/download/${KIND_RELEASE}/kind-linux-amd64
         - chmod +x kind
         - sudo mv kind /usr/local/bin/
