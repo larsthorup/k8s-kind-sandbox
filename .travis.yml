@@ -55,5 +55,5 @@ jobs:
         - HELLO_URL=http://${HELLO_HOST}:${HELLO_PORT}/
         - echo Internal URL of hello-app is ${HELLO_URL}
         # Request from app
-        - curl ${HELLO_URL}
+        - curl -i ${HELLO_URL}
         # TODO: verify app output
