@@ -27,8 +27,17 @@ jobs:
         - export KUBECONFIG="$(kind get kubeconfig-path)"
 
       script:
-        # Wait for control plane rollout
-        - kubectl wait node/kind-control-plane --for=condition=Ready
+        # Note: not necessary?? Wait for control plane rollout
+        # kubectl wait node/kind-control-plane --for=condition=Ready
 
         # List running nodes
         - kubectl get nodes
+
+        # Deploy app
+        kubectl apply -f hello.deploy.yml
+        kubectl rollout status deployment hello-deploy
+        kubectl get deploy hello-deploy
+
+        # Expose app
+        # kubectl apply -f hello.svc.yml
+        # kubectl get service hello-svc
