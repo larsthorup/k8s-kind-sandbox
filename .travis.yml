@@ -47,7 +47,8 @@ jobs:
         - kubectl get service hello-svc -o json
         - kubectl get service hello-svc -o=jsonpath='{.spec.clusterIP}'
         # - HELLO_HOST=$(kubectl get service hello-svc -o=jsonpath='{.spec.clusterIP}')
-        - HELLO_HOST=kind-control-plane
+        # - HELLO_HOST=kind-control-plane
+        - HELLO_HOST=${NODE_IP}
         # - HELLO_PORT=$(kubectl get service hello-svc -o=jsonpath='{.spec.ports[0].targetPort}')
         - HELLO_PORT=$(kubectl get service hello-svc -o=jsonpath='{.spec.ports[0].nodePort}')
         # - HELLO_PORT=$(kubectl get service hello-svc -o=jsonpath='{.spec.ports[0].port}')
