@@ -7,8 +7,8 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-    - port: 80 # for digital ocean
-      nodePort: 30001 # for minikube and kind
+    - port: 80 # for digital ocean and kind
+      nodePort: 30001 # for minikube
       targetPort: 8080
       protocol: TCP
       name: http
