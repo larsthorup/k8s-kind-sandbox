@@ -32,6 +32,7 @@ jobs:
 
         # List running nodes
         - kubectl get nodes
+        - kubectl get nodes -o json
 
         # Deploy app
         - kubectl apply -f hello.deploy.yml
@@ -45,11 +46,10 @@ jobs:
         - kubectl get service hello-svc -o=jsonpath='{.spec.clusterIP}'
         - HELLO_HOST=$(kubectl get service hello-svc -o=jsonpath='{.spec.clusterIP}')
         # - HELLO_PORT=$(kubectl get service hello-svc -o=jsonpath='{.spec.ports[0].targetPort}')
-        # - HELLO_PORT=$(kubectl get service hello-svc -o=jsonpath='{.spec.ports[0].nodePort}')
-        - HELLO_PORT=$(kubectl get service hello-svc -o=jsonpath='{.spec.ports[0].port}')
+        - HELLO_PORT=$(kubectl get service hello-svc -o=jsonpath='{.spec.ports[0].nodePort}')
+        # - HELLO_PORT=$(kubectl get service hello-svc -o=jsonpath='{.spec.ports[0].port}')
         - HELLO_URL=http://${HELLO_HOST}:${HELLO_PORT}/
         - echo Internal URL of hello-app is ${HELLO_URL}
-
         # Request from app
         - curl ${HELLO_URL}
         # TODO: verify app output
