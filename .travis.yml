@@ -32,7 +32,9 @@ jobs:
 
         # List running nodes
         - kubectl get nodes
-        - kubectl get nodes -o json
+        - kubectl get node kind-control-plane -o json
+        - NODE_IP=$(kubectl get node kind-control-plane -o=jsonpath='{.status.addresses[0].address}')
+        - echo NODE_IP=${NODE_IP}
 
         # Deploy app
         - kubectl apply -f hello.deploy.yml
@@ -44,7 +46,8 @@ jobs:
         - kubectl get service hello-svc
         - kubectl get service hello-svc -o json
         - kubectl get service hello-svc -o=jsonpath='{.spec.clusterIP}'
-        - HELLO_HOST=$(kubectl get service hello-svc -o=jsonpath='{.spec.clusterIP}')
+        # - HELLO_HOST=$(kubectl get service hello-svc -o=jsonpath='{.spec.clusterIP}')
+        - HELLO_HOST=kind-control-plane
         # - HELLO_PORT=$(kubectl get service hello-svc -o=jsonpath='{.spec.ports[0].targetPort}')
         - HELLO_PORT=$(kubectl get service hello-svc -o=jsonpath='{.spec.ports[0].nodePort}')
         # - HELLO_PORT=$(kubectl get service hello-svc -o=jsonpath='{.spec.ports[0].port}')
