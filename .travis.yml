@@ -28,35 +28,26 @@ jobs:
         - export KUBECONFIG="$(kind get kubeconfig-path)"
 
       script:
-        # Note: not necessary?? Wait for control plane rollout
-        # kubectl wait node/kind-control-plane --for=condition=Ready
-
         # List running nodes
-        - kubectl get nodes
         - kubectl get node kind-control-plane -o json
         - NODE_IP=$(kubectl get node kind-control-plane -o=jsonpath='{.status.addresses[0].address}')
-        - echo NODE_IP=${NODE_IP}
 
         # Deploy app
         - kubectl apply -f hello.deploy.yml
         - kubectl rollout status deployment hello-deploy
-        - kubectl get deploy hello-deploy
+        - kubectl get deploy hello-deploy -o json
 
         # Expose app
         - kubectl apply -f hello.svc.yml
-        - kubectl get service hello-svc
         - kubectl get service hello-svc -o json
-        - kubectl get service hello-svc -o=jsonpath='{.spec.clusterIP}'
-        # - HELLO_HOST=$(kubectl get service hello-svc -o=jsonpath='{.spec.clusterIP}')
-        # - HELLO_HOST=kind-control-plane
         - HELLO_HOST=${NODE_IP}
-        # - HELLO_PORT=$(kubectl get service hello-svc -o=jsonpath='{.spec.ports[0].targetPort}')
         - HELLO_PORT=$(kubectl get service hello-svc -o=jsonpath='{.spec.ports[0].nodePort}')
-        # - HELLO_PORT=$(kubectl get service hello-svc -o=jsonpath='{.spec.ports[0].port}')
         - HELLO_URL=http://${HELLO_HOST}:${HELLO_PORT}/
         - echo Internal URL of hello-app is ${HELLO_URL}
+
         # Request from app
         - curl -i ${HELLO_URL} > hello.txt
         - cat hello.txt
+
         # Verify app output
         - cat hello.txt | grep "Check out my K8s Deep Dive course!"
