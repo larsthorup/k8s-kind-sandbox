@@ -4,7 +4,7 @@ services:
 env:
   global:
     - KUBECTL_RELEASE=v1.17.3
-    - KIND_RELEASE=0.7.0
+    - KIND_RELEASE=v0.7.0
 jobs:
   include:
     - stage: Integration Tests
