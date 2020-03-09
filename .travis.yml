@@ -37,6 +37,8 @@ jobs:
         - kubectl apply -f hello.deploy.yml
         - kubectl rollout status deployment hello-deploy
         - kubectl get deploy hello-deploy
+
         # Expose app
-        # - kubectl apply -f hello.svc.yml
-        # - kubectl get service hello-svc
+        - kubectl apply -f hello.svc.yml
+        - kubectl get service hello-svc
+        - kubectl get svc hello-svc -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'
