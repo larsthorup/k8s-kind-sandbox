@@ -57,4 +57,5 @@ jobs:
         # Request from app
         - curl -i ${HELLO_URL} > hello.txt
         - cat hello.txt
-        # TODO: verify app output
+        # Verify app output
+        - cat hello.txt | grep "Check out my ____K8s Deep Dive course!" || echo "Error: Actual output does not match expected output"
