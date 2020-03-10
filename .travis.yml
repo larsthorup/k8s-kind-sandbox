@@ -3,7 +3,6 @@ services:
 
 jobs:
   include:
-    # TODO: build docker image
     - stage: Integration Tests
 
       install:
@@ -19,7 +18,7 @@ jobs:
 
         # Load image to cache
         - cd infra
-        # - sh load.sh
+        - sh load.sh
 
         # Deploy app
         - sh deploy.sh

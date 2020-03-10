@@ -1,4 +1,5 @@
 docker save --output /tmp/hello.tar larsthorup-k8s-kind-sandbox/hello:local
-eval $(minikube docker-env)
+
+& minikube -p minikube docker-env | Invoke-Expression
 
 kind load docker-image larsthorup-k8s-kind-sandbox/hello:local
