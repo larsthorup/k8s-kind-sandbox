@@ -11,13 +11,15 @@ jobs:
         - kubectl get node --selector=node-role.kubernetes.io/master -o json
 
       script:
+        - cd cluster
+
         # Deploy app
-        - sh cluster/deploy.sh
+        - sh deploy.sh
         - kubectl get deploy hello-deploy -o json
 
         # Expose app
-        - sh cluster/expose.sh
+        - sh expose.sh
         - kubectl get service hello-svc -o json
 
         # Verify app output
-        - sh cluster/test.sh
+        - sh test.sh

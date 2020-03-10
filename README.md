@@ -2,9 +2,11 @@
 
 [![Build Status](https://travis-ci.org/larsthorup/k8s-kind-sandbox.png)](https://travis-ci.org/larsthorup/k8s-kind-sandbox)
 
-Inspired by this blog post: https://dzone.com/articles/running-kubernetes-in-the-ci-pipeline-for-integrat
+This repo demonstrates how to test k8s scripts on Travis-CI or any other CI service with no signup to any cloud services required.
 
-This repo demonstrates how to test k8s scripts on Trevis-CI with no signup to any cloud services required.
+The scripts also run successfully locally using "minikube" instead of "kind".
+
+Inspired by this blog post: https://dzone.com/articles/running-kubernetes-in-the-ci-pipeline-for-integrat
 
 ## Prequisites
 
