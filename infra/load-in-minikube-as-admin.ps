@@ -1,5 +1,8 @@
-docker save --output /tmp/hello.tar larsthorup-k8s-kind-sandbox/hello:local
+# Save image to file
+docker save --output /temp/hello.tar larsthorup-k8s-kind-sandbox/hello:local
 
-& minikube -p minikube docker-env | Invoke-Expression
+# Reference docker inside minikube
+& minikube docker-env | Invoke-Expression
 
-kind load docker-image larsthorup-k8s-kind-sandbox/hello:local
+# Load image from file
+docker load --input /temp/hello.tar 
