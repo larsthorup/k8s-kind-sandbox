@@ -10,12 +10,12 @@ jobs:
         - sh infra/setup-kind-cluster.sh
         - kubectl get node --selector=node-role.kubernetes.io/master -o json
 
-      script:
+      before_script:
         - cd src
         - sh build.sh
         - sh test.sh
 
-      deploy:
+      script:
         - cd infra
 
         # Deploy app
