@@ -7,17 +7,17 @@ jobs:
     - stage: Integration Tests
 
       before_script:
-        - sh setup-kind-cluster.sh
+        - sh cluster/setup-kind-cluster.sh
         - kubectl get node --selector=node-role.kubernetes.io/master -o json
 
       script:
         # Deploy app
-        - sh deploy.sh
+        - sh cluster/deploy.sh
         - kubectl get deploy hello-deploy -o json
 
         # Expose app
-        - sh expose.sh
+        - sh cluster/expose.sh
         - kubectl get service hello-svc -o json
 
         # Verify app output
-        - sh test.sh
+        - sh cluster/test.sh
