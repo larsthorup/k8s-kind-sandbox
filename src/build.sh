@@ -1,1 +1,1 @@
-docker build -t larsthorup-k8s-kind-sandbox/hello .
+docker build -t larsthorup-k8s-kind-sandbox/hello:local .
