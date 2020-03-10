@@ -6,7 +6,7 @@ jobs:
     # TODO: build docker image
     - stage: Integration Tests
 
-      before_script:
+      install:
         - sh infra/setup-kind-cluster.sh
         - kubectl get node --selector=node-role.kubernetes.io/master -o json
 
@@ -15,7 +15,7 @@ jobs:
         - sh build.sh
         - sh test.sh
 
-      script:
+      deploy:
         - cd infra
 
         # Deploy app
