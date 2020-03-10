@@ -1,53 +1,23 @@
 services:
   - docker
 
-env:
-  global:
-    - KUBECTL_RELEASE=v1.17.3
-    - KIND_RELEASE=v0.7.0
 jobs:
   include:
     # TODO: build docker image
     - stage: Integration Tests
 
       before_script:
-        # Download and install kubectl
-        - curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_RELEASE}/bin/linux/amd64/kubectl
-        - chmod +x kubectl
-        - sudo mv kubectl /usr/local/bin/
-
-        # Download and install KinD
-        - curl -Lo kind https://github.com/kubernetes-sigs/kind/releases/download/${KIND_RELEASE}/kind-linux-amd64
-        - chmod +x kind
-        - sudo mv kind /usr/local/bin/
-
-        # Create a new Kubernetes cluster using KinD
-        - kind create cluster
-
-        # Set KUBECONFIG environment variable
-        - export KUBECONFIG="$(kind get kubeconfig-path)"
+        - sh setup-kind-cluster.sh
+        - kubectl get node --selector=node-role.kubernetes.io/master -o json
 
       script:
-        # List running nodes
-        - kubectl get node kind-control-plane -o json
-        - NODE_IP=$(kubectl get node kind-control-plane -o=jsonpath='{.status.addresses[0].address}')
-
         # Deploy app
-        - kubectl apply -f hello.deploy.yml
-        - kubectl rollout status deployment hello-deploy
+        - sh deploy.sh
         - kubectl get deploy hello-deploy -o json
 
         # Expose app
-        - kubectl apply -f hello.svc.yml
+        - sh expose.sh
         - kubectl get service hello-svc -o json
-        - HELLO_HOST=${NODE_IP}
-        - HELLO_PORT=$(kubectl get service hello-svc -o=jsonpath='{.spec.ports[0].nodePort}')
-        - HELLO_URL=http://${HELLO_HOST}:${HELLO_PORT}/
-        - echo Internal URL of hello-app is ${HELLO_URL}
-
-        # Request from app
-        - curl -i ${HELLO_URL} > hello.txt
-        - cat hello.txt
 
         # Verify app output
-        - cat hello.txt | grep "Check out my K8s Deep Dive course!"
+        - sh test.sh
