@@ -7,11 +7,16 @@ jobs:
     - stage: Integration Tests
 
       before_script:
-        - sh cluster/setup-kind-cluster.sh
+        - sh infra/setup-kind-cluster.sh
         - kubectl get node --selector=node-role.kubernetes.io/master -o json
 
       script:
-        - cd cluster
+        - cd src
+        - sh build.sh
+        - sh test.sh
+
+      script:
+        - cd infra
 
         # Deploy app
         - sh deploy.sh
